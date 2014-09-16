@@ -78,7 +78,6 @@ public class BlockTracker {
 		logger.info("DT: " + var2);
 		logger.info("BEC: " + var3);
 		logger.info("AHD: " + var4);
-		logger.info("Current Blocks: " + Arrays.toString(Blocks));
 	}
 
 	public static void sqlConnect() {
@@ -88,6 +87,7 @@ public class BlockTracker {
 			try {
 				Connection conn = DriverManager.getConnection("jdbc:mysql://"
 						+ host + "/" + database, dbuser, dbpass);
+				logger.info("Current Monitoring Blocks: " + Arrays.toString(Blocks));
 			} catch (SQLException e) {
 				logger.warn("BlockTracker disabled: SQL error occurred.", e);
 			}
