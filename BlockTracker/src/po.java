@@ -154,7 +154,7 @@ public class po extends MinecraftServer implements pj {
             j.info("Done (" + var14 + ")! For help, type \"help\" or \"?\"");
             
             // Start up BlockTracker
-            j.info("Starting Geistes block tracker");
+            j.info("Starting Geistes's BlockTracker...");
             BlockTracker.boot();
             
             

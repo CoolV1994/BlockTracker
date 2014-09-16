@@ -18,6 +18,7 @@ public class BlockTrackSQL {
 			prop.setProperty("database", "BlockTrack");
 			prop.setProperty("dbuser", "username");
 			prop.setProperty("dbpassword", "password");
+			prop.setProperty("blocks","138,57,54,46,42,41");
 	 
 			// save properties to project root folder
 			prop.store(output, null);
