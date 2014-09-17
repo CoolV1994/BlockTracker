@@ -52,13 +52,13 @@ public class BlockTrackerConfig {
 					Blocks[i] = Integer.parseInt(items[i]);
 				} catch (NumberFormatException nfe) {
 					BlockTracker.logger
-							.warn("BlockTracker disabled! Configuration error concerning Blocks",
+							.warn("Disabled! Configuration error concerning Blocks",
 									nfe);
 				}
 			}
 		} catch (IOException ex) {
 			BlockTracker.logger
-					.warn("BlockTracker disabled! Configuration error.", ex);
+					.warn("Disabled! Configuration error.", ex);
 		} finally {
 			if (input != null) {
 				try {
@@ -66,7 +66,7 @@ public class BlockTrackerConfig {
 					return true;
 				} catch (IOException e) {
 					BlockTracker.logger
-					.warn("BlockTracker disabled! Configuration error.", e);
+					.warn("Disabled! Configuration error.", e);
 					return false;
 				}
 			}

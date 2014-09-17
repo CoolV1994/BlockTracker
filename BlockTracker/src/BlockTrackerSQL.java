@@ -21,14 +21,14 @@ public class BlockTrackerSQL {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			BlockTracker.logger.warn("BlockTracker Disabled");
+			BlockTracker.logger.warn("Disabled");
 			BlockTracker.logger.warn("mySQL dependencies error", e);
 		}
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://" + host, dbuser,
 					dbpass);
 		} catch (SQLException err) {
-			BlockTracker.logger.warn("BlockTracker Disabled");
+			BlockTracker.logger.warn("Disabled");
 			BlockTracker.logger.warn("mySQL connection error", err);
 		}
 		return conn;
@@ -92,7 +92,7 @@ public class BlockTrackerSQL {
 				// Create Table
 			}
 		} catch (SQLException e) {
-			BlockTracker.logger.warn("BlockTracker Disabled!");
+			BlockTracker.logger.warn("sDisabled!");
 			BlockTracker.logger.warn("mySQL table related error", e);
 			closeConnection(connection);
 			closeStatement(statement);

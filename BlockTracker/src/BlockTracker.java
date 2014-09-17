@@ -16,6 +16,7 @@ public class BlockTracker extends Thread{
 	
 	public void run() {
 
+		this.setName("BlockTracker");
 		logger.info("Checking Config");
 		if(BlockTrackerConfig.readConfig() == true){
 			logger.info("Checking SQL DB");
