@@ -43,6 +43,8 @@ private static final oa a = new oa("air");
    protected final bed L;
    private bec M;
    private String N;
+   //BlockTracker
+   BlockTracker blocktracker = new BlockTracker();
 
 
    public static int a(atr var0) {
@@ -591,7 +593,7 @@ private static final oa a = new oa("air");
    //Please not this method is called upon any BlockBreak
    //And usually does nothing! (It's a great place to hook!)
    public void a(aqu var1, dt var2, bec var3, ahd var4) {
-	   BlockTracker.BlockBreakEvent(var1, var2, var3, var4);
+	   blocktracker.BlockBreakEvent(var1, var2, var3, var4);
 	   //Hello there, Geistes here.
 	   //This is where BlockTracker hooks into NMS.
    }

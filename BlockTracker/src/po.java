@@ -29,7 +29,7 @@ public class po extends MinecraftServer implements pj {
    private arc q;
    private boolean r;
    //BlockTracker
-   BlockTracker BlockTracker = new BlockTracker();
+   BlockTracker blocktracker = new BlockTracker();
 
    public po(File var1) {
       super(var1, Proxy.NO_PROXY, a);
@@ -155,7 +155,7 @@ public class po extends MinecraftServer implements pj {
             
             // Start up BlockTracker
             j.info("Starting Geistes's BlockTracker...");
-            BlockTracker.start();
+            blocktracker.start();
             
             
             if(this.n.a("enable-query", false)) {

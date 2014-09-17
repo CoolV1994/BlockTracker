@@ -11,10 +11,6 @@ public class BlockTrackerConfig {
 	static Properties prop = new Properties();
 	static OutputStream output = null;
 	public static int[] Blocks;
-	public static String host;
-	public static String database;
-	public static String dbuser;
-	public static String dbpass;
 
 	
 	//Should attempt to ready config and return true if it can.
@@ -35,10 +31,10 @@ public class BlockTrackerConfig {
 
 			prop.load(input);
 
-			host = (prop.getProperty("host"));
-			database = (prop.getProperty("database"));
-			dbuser = prop.getProperty("dbuser");
-			dbpass = prop.getProperty("dbpassword");
+			BlockTracker.host = prop.getProperty("host");
+			BlockTracker.database = prop.getProperty("database");
+			BlockTracker.dbuser = prop.getProperty("dbuser");
+			BlockTracker.dbpass = prop.getProperty("dbpass");
 			String var1 = prop.getProperty("blocks");
 
 			
@@ -63,6 +59,7 @@ public class BlockTrackerConfig {
 			if (input != null) {
 				try {
 					input.close();
+					BlockTracker.logger.info("Configuration loaded");
 					return true;
 				} catch (IOException e) {
 					BlockTracker.logger
@@ -71,6 +68,7 @@ public class BlockTrackerConfig {
 				}
 			}
 		}
+		BlockTracker.logger.info("Configuration loaded2");
 		return true;
 	}
 
