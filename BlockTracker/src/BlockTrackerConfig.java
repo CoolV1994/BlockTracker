@@ -10,21 +10,17 @@ public class BlockTrackerConfig {
 
 	static Properties prop = new Properties();
 	static OutputStream output = null;
-	public static int[] Blocks;
 
-	
-	//Should attempt to ready config and return true if it can.
-	//If config is not found it should create one and return false
 	public static boolean readConfig() {
 
 		Properties prop = new Properties();
 		InputStream input = null;
 
 		try {
-			
+
 			try {
-			input = new FileInputStream("BlockTrackerDB.config");
-			} catch(FileNotFoundException e){
+				input = new FileInputStream("BlockTrackerDB.config");
+			} catch (FileNotFoundException e) {
 				createConfig();
 				return false;
 			}
@@ -35,40 +31,22 @@ public class BlockTrackerConfig {
 			BlockTracker.database = prop.getProperty("database");
 			BlockTracker.dbuser = prop.getProperty("dbuser");
 			BlockTracker.dbpass = prop.getProperty("dbpass");
-			String var1 = prop.getProperty("blocks");
-
-			
-			//Use block names not ID's now.
-			//TODO
-			String[] items = var1.replaceAll("\\[", "").replaceAll("\\]", "")
-					.split(",");
-			Blocks = new int[items.length];
-			for (int i = 0; i < items.length; i++) {
-				try {
-					Blocks[i] = Integer.parseInt(items[i]);
-				} catch (NumberFormatException nfe) {
-					BlockTracker.logger
-							.warn("Disabled! Configuration error concerning Blocks",
-									nfe);
-				}
-			}
 		} catch (IOException ex) {
-			BlockTracker.logger
-					.warn("Disabled! Configuration error.", ex);
+			BlockTracker.logger.warn("Disabled! Configuration error.", ex);
 		} finally {
 			if (input != null) {
 				try {
 					input.close();
-					BlockTracker.logger.info("Configuration loaded");
+					BlockTracker.logger.info("Config: OK");
 					return true;
 				} catch (IOException e) {
-					BlockTracker.logger
-					.warn("Disabled! Configuration error.", e);
+					BlockTracker.logger.warn("Disabled! Configuration error.",
+							e);
 					return false;
 				}
 			}
 		}
-		BlockTracker.logger.info("Configuration loaded2");
+		BlockTracker.logger.info("Config: OK");
 		return true;
 	}
 
@@ -82,9 +60,7 @@ public class BlockTrackerConfig {
 			prop.setProperty("database", "blocktracker");
 			prop.setProperty("dbuser", "username");
 			prop.setProperty("dbpass", "pasword");
-			prop.setProperty("blocks", "138,57,54,46,42,41");
 
-			// save properties to project root folder
 			prop.store(output, null);
 
 		} catch (IOException io) {
@@ -93,7 +69,8 @@ public class BlockTrackerConfig {
 			if (output != null) {
 				try {
 					output.close();
-					BlockTracker.logger.warn("Configuartion file created. Please edit and restart server");
+					BlockTracker.logger
+							.warn("Configuartion file created. Please edit and restart server");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
