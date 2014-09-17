@@ -33,8 +33,8 @@ public class BlockTracker extends Thread {
 			if (BlockTrackerSQL.checkDB() == true) {
 				logger.info("Checking SQL Table...");
 				if (BlockTrackerSQL.checkTable() == true) {
-					logger.info("Enabled!");
 					logger.info("Everything appears OK");
+					logger.info("Enabled!");
 				} else {
 					Track = false;
 				}
