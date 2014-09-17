@@ -2,7 +2,6 @@ import java.sql.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,12 +16,13 @@ import org.apache.logging.log4j.Logger;
 public class BlockTracker {
 
 	private static final Logger logger = LogManager.getLogger();
-	static BlockTrackSQL blocktracksql = new BlockTrackSQL();
+	static BlockTrackerSQL blocktracksql = new BlockTrackerSQL();
 	public static int[] Blocks;
-	private static String host;
-	private static String database;
-	private static String dbuser;
-	private static String dbpass;
+	public static String host;
+	public static String database;
+	public static String dbuser;
+	public static String dbpass;
+	private static String fr;
 
 	public static void boot() {
 
@@ -31,15 +31,16 @@ public class BlockTracker {
 
 		try {
 
-			input = new FileInputStream("db.config");
+			input = new FileInputStream("BlockTrackerDB.config");
 
 			// load a properties file
 			prop.load(input);
 
-			host = prop.getProperty("host");
-			database = prop.getProperty("database");
+			host = (prop.getProperty("host"));
+			database = (prop.getProperty("database"));
 			dbuser = prop.getProperty("dbuser");
 			dbpass = prop.getProperty("dbpassword");
+			fr = prop.getProperty("fr");
 			String var1 = prop.getProperty("blocks");
 
 			String[] items = var1.replaceAll("\\[", "").replaceAll("\\]", "")
@@ -62,8 +63,9 @@ public class BlockTracker {
 				try {
 					input.close();
 					// System.out.println(time() +
+					// logger.info("Current Monitoring Blocks: " + Arrays.toString(Blocks));
 					// "[BlockTracker thread/INFO]: Enabled!");
-					sqlConnect();
+					initDB();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -71,7 +73,6 @@ public class BlockTracker {
 		}
 	}
 
-	
 	public static void BlockBreakEvent(aqu var1, dt var2, bec var3, ahd var4) {
 		logger.warn("BlockBreakEvent");
 		logger.info("AQU: " + var1);
@@ -80,20 +81,24 @@ public class BlockTracker {
 		logger.info("AHD: " + var4);
 	}
 
-	public static void sqlConnect() {
+	public static void initDB() {
+		if(fr.equals(1)){
+		Connection conn = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); // this accesses Driver in
-													// jdbc.
-			try {
-				Connection conn = DriverManager.getConnection("jdbc:mysql://"
-						+ host + "/" + database, dbuser, dbpass);
-				logger.info("Current Monitoring Blocks: " + Arrays.toString(Blocks));
-			} catch (SQLException e) {
-				logger.warn("BlockTracker disabled: SQL error occurred.", e);
-			}
-		} catch (ClassNotFoundException e) {
-			logger.warn("BlockTracker disabled: mySQL dependency issue.", e);
+			conn = BlockTrackerSQL.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		try {
+			conn.createStatement().execute("CREATE SCHEMA `blocktracker` ;");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}else{
+	}
 	}
 
 }
