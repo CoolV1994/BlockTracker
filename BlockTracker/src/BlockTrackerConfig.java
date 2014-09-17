@@ -83,6 +83,7 @@ public class BlockTrackerConfig {
 			prop.setProperty("host", "localhost");
 			prop.setProperty("database", "blocktracker");
 			prop.setProperty("dbuser", "username");
+			prop.setProperty("dbpass", "pasword");
 			prop.setProperty("blocks", "138,57,54,46,42,41");
 
 			// save properties to project root folder
@@ -94,6 +95,7 @@ public class BlockTrackerConfig {
 			if (output != null) {
 				try {
 					output.close();
+					BlockTracker.logger.warn("Configuartion file created. Please edit and restart server");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

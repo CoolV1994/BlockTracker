@@ -28,7 +28,8 @@ public class po extends MinecraftServer implements pj {
    private boolean p;
    private arc q;
    private boolean r;
-
+   //BlockTracker
+   BlockTracker BlockTracker = new BlockTracker();
 
    public po(File var1) {
       super(var1, Proxy.NO_PROXY, a);
@@ -83,7 +84,6 @@ public class po extends MinecraftServer implements pj {
             try {
 				var3 = InetAddress.getByName(this.s());
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
          }
@@ -155,7 +155,7 @@ public class po extends MinecraftServer implements pj {
             
             // Start up BlockTracker
             j.info("Starting Geistes's BlockTracker...");
-            BlockTracker.boot();
+            BlockTracker.start();
             
             
             if(this.n.a("enable-query", false)) {

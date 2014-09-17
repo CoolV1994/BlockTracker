@@ -74,13 +74,18 @@ public class BlockTrackerSQL {
 	//Server should continue to run.
 	public static boolean checkTable() {
 		Connection connection = null;
+		Statement statement = null;
 		try {
 			connection = getConnection();
+			statement = connection.createStatement();
+			String sql = "SELECT DATABASE " + database;
+			statement.executeUpdate(sql);
 			DatabaseMetaData dbm = connection.getMetaData();
 			ResultSet tables = dbm.getTables(null, null, "BlockTracking", null);
 			if (tables.next()) {
 				// Table exists
 				closeConnection(connection);
+				closeStatement(statement);
 				return true;
 			} else {
 				// Table does not exist
@@ -90,10 +95,12 @@ public class BlockTrackerSQL {
 			BlockTracker.logger.warn("BlockTracker Disabled!");
 			BlockTracker.logger.warn("mySQL table related error", e);
 			closeConnection(connection);
+			closeStatement(statement);
 			return false;
 		}
 		// Table exists
 		closeConnection(connection);
+		closeStatement(statement);
 		return true;
 	}
 
