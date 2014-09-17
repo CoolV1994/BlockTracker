@@ -1,14 +1,12 @@
 import java.io.OutputStream;
 import java.util.Properties;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BlockTrackerSQL {
-	
+
 	Properties prop = new Properties();
 	OutputStream output = null;
 
@@ -21,20 +19,19 @@ public class BlockTrackerSQL {
 			BlockTracker.logger.warn("mySQL dependencies error", e);
 		}
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://" + BlockTracker.host, BlockTracker.dbuser,
+			conn = DriverManager.getConnection("jdbc:mysql://"
+					+ BlockTracker.host, BlockTracker.dbuser,
 					BlockTracker.dbpass);
 		} catch (SQLException err) {
 			BlockTracker.logger.warn("Disabled");
 			BlockTracker.logger.warn("mySQL connection error", err);
 		}
-		BlockTracker.logger.info("Attempted to make SQL Connection.");
 		return conn;
 	}
 
-	
-	//Returns true if DB exists or if it has been created.
-	//Returns false if error, should stop mod.
-	//Server should continue to run.
+	// Returns true if DB exists or if it has been created.
+	// Returns false if error, should stop mod.
+	// Server should continue to run.
 	public static boolean checkDB() {
 		Connection connection = null;
 		Statement statement = null;
@@ -48,7 +45,7 @@ public class BlockTrackerSQL {
 				// Database already exists error
 				closeStatement(statement);
 				closeConnection(connection);
-				BlockTracker.logger.info("Database Exists!");
+				BlockTracker.logger.info("Database: OK");
 				return true;
 			} else {
 				BlockTracker.logger
@@ -59,16 +56,15 @@ public class BlockTrackerSQL {
 			}
 		}
 		// Database created
-		BlockTracker.logger.info("Database created!");
+		BlockTracker.logger.info("Database: OK");
 		closeStatement(statement);
 		closeConnection(connection);
 		return true;
 	}
 
-	
-	//Returns true if Table exists or if it has been created.
-	//Returns false if error, should stop mod.
-	//Server should continue to run.
+	// Returns true if Table exists or if it has been created.
+	// Returns false if error, should stop mod.
+	// Server should continue to run.
 	public static boolean checkTable() {
 		Connection connection = null;
 		Statement statement = null;
@@ -77,31 +73,17 @@ public class BlockTrackerSQL {
 			statement = connection.createStatement();
 			String sql = "USE " + BlockTracker.database + ";";
 			statement.execute(sql);
-			DatabaseMetaData dbm = connection.getMetaData();
-			ResultSet tables = dbm.getTables(null, null, "blockbreaks", null);
-			if (tables.next()) {
-				// Table exists
-				closeConnection(connection);
-				closeStatement(statement);
-				BlockTracker.logger.info("Table exists.");
-				return true;
-			} else {
-				// Table does not exist
-				// Create Table
-				BlockTracker.logger.info("Table does not exist, creating...");
-				String createTable = "CREATE TABLE `blocktracker`.`blockbreaks` (" +
-						  "`UID` INT NOT NULL AUTO_INCREMENT, " +
-						  "`player` VARCHAR(45) NOT NULL, " +
-						  "`x` VARCHAR(45) NOT NULL, " +
-						  "`y` VARCHAR(45) NOT NULL, " +
-						  "`z` VARCHAR(45) NOT NULL, " +
-						  "`world` VARCHAR(45) NOT NULL, " +
-						  "`time` VARCHAR(45) NOT NULL, " +
-						  "`block` VARCHAR(45) NOT NULL, " +
-						  "`variant` VARCHAR(45) NOT NULL, " +
-						  "PRIMARY KEY (`UID`));";
-				statement.execute(createTable);
-			}
+			// Create Table
+			String createTable = "CREATE TABLE IF NOT EXISTS `blocktracker`.`blockbreaks` ("
+					+ "`UID` INT NOT NULL AUTO_INCREMENT, "
+					+ "`player` VARCHAR(45) NOT NULL, "
+					+ "`x` VARCHAR(45) NOT NULL, "
+					+ "`y` VARCHAR(45) NOT NULL, "
+					+ "`z` VARCHAR(45) NOT NULL, "
+					+ "`time` VARCHAR(45) NOT NULL, "
+					+ "`block` VARCHAR(45) NOT NULL, "
+					+ "PRIMARY KEY (`UID`));";
+			statement.execute(createTable);
 		} catch (SQLException e) {
 			BlockTracker.logger.warn("Disabled!");
 			BlockTracker.logger.warn("mySQL table related error", e);
@@ -112,7 +94,38 @@ public class BlockTrackerSQL {
 		// Table exists
 		closeConnection(connection);
 		closeStatement(statement);
-		BlockTracker.logger.info("Tables Created");
+		BlockTracker.logger.info("Tables OK");
+		return true;
+	}
+
+	public static boolean blockTrack(String player, String x, String y,
+			String z, String time, String block) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTracker.database + ";";
+			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`) VALUES ('"
+					+ player
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time + "', '" + block + "'" + ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTracker.logger.warn("BlockTracker Disabled!", sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
 		return true;
 	}
 
@@ -120,7 +133,8 @@ public class BlockTrackerSQL {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			BlockTracker.logger.warn("mySQL error: Could not close connection", e);
+			BlockTracker.logger.warn("mySQL error: Could not close connection",
+					e);
 		}
 	}
 
@@ -128,7 +142,8 @@ public class BlockTrackerSQL {
 		try {
 			statement.close();
 		} catch (SQLException e) {
-			BlockTracker.logger.warn("mySQL error: Could not close statement", e);
+			BlockTracker.logger.warn("mySQL error: Could not close statement",
+					e);
 		}
 	}
 
