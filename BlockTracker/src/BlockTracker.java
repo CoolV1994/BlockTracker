@@ -18,9 +18,7 @@ public class BlockTracker extends Thread {
 	public static String database;
 	public static String dbuser;
 	public static String dbpass;
-	public static int[] Blocks;
 	public static boolean Track;
-	boolean ready;
 
 	public synchronized void run() {
 		this.setName("BlockTracker");
@@ -28,11 +26,11 @@ public class BlockTracker extends Thread {
 		logger.info("Server: v1.8");
 		logger.info("-Gesites <3-");
 		logger.info("Checking Config...");
-		if (BlockTrackerConfig.readConfig() == true) {
+		if (BlockTrackerConfig.readConfig()) {
 			logger.info("Checking SQL DB...");
-			if (BlockTrackerSQL.checkDB() == true) {
+			if (BlockTrackerSQL.checkDB()) {
 				logger.info("Checking SQL Table...");
-				if (BlockTrackerSQL.checkTable() == true) {
+				if (BlockTrackerSQL.checkTable()) {
 					logger.info("Everything appears OK");
 					logger.info("Enabled!");
 					Track = true;
@@ -40,15 +38,15 @@ public class BlockTracker extends Thread {
 					Track = false;
 				}
 			} else {
-				Track = false;
-			}
+                Track = false;
+            }
 		} else {
 			Track = false;
 		}
 	}
 
 	public void BlockBreakEvent(aqu var1, dt var2, bec var3, ahd var4) {
-		if (Track == true) {
+		if (Track) {
 			String BlockType = String.valueOf(var3);
 
 			String BlockCoordsRaw = String.valueOf(var2);
@@ -77,8 +75,7 @@ public class BlockTracker extends Thread {
 	public String getTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		String YMDHMS = dateFormat.format(date);
-		return YMDHMS;
+		return dateFormat.format(date);
 
 	}
 

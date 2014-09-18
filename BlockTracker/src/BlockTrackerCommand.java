@@ -20,7 +20,7 @@ public class BlockTrackerCommand extends z {
 
 	public void a(ae var1, String[] var2) {
 		String test = "test";
-		var1.a(new hz("Response 1", new Object[] { test }));
+		var1.a(new hz("Response 1", test));
 	}
 
 	@Override
