@@ -11,7 +11,7 @@ public class BlockTrackerCommand extends z {
 	}
 
 	public int a() {
-		return 1;
+		return 0;
 	}
 
 	public String c(ae var1) {
