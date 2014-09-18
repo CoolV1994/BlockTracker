@@ -39,9 +39,10 @@
 <p>BlockTracker ties into the core Minecraft server code. Whenever a block is broken or placed in the world, BlockTracker's hooks parse the playername, coordinates, and the blocktype from the Minecraft server and into the BlockTracker modification. BlockTracker then connects to a mySQL server configured by you (the server administrator) and inserts that information to database and table.</p>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Future Development</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>BlockTracker was built in two phases over a period of one day. The inital phase was to decompile the Minecraft code and map key methods. After locating these methods it was a matter of parsing all of the variable data and processing it to a nice and clean human readable state, where it could then be inserted into a database for storage.</p>
+<p>In the future BlockTracker will be expanded to poses a command line interface from within the game for remote administration and databse inqueries.</p>
 
 <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
