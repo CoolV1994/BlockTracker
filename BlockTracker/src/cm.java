@@ -1,8 +1,13 @@
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 //Example for setting blocks.
 //Not apart of BlockTracker
+
 public class cm extends z {
+	
+	public static final Logger logger = LogManager.getLogger();
 
    public String c() {
       return "setblock";
@@ -27,16 +32,16 @@ public class cm extends z {
       } else {
          sender.a(ag.b, 0);
          dt coordinates = a(sender, arguments, 0, false);
-         BlockTracker.logger.info("dt var3 27: ", coordinates);
+         logger.info("dt var3 27: ", coordinates);
          atr block = z.g(sender, arguments[3]);
-         BlockTracker.logger.info("atr var4 29: ", block);
+         logger.info("atr var4 29: ", block);
          int SomeSpecificArgument = 0;
          if(arguments.length >= 5) {
             SomeSpecificArgument = a(arguments[4], 0, 15);
          }
 
          aqu world = sender.e();
-         BlockTracker.logger.info("aqu var6 36: ", world);
+         logger.info("aqu var6 36: ", world);
          if(!world.e(coordinates)) {
             try {
 				throw new di("commands.setblock.outOfWorld", new Object[0]);
@@ -71,6 +76,7 @@ public class cm extends z {
                }
             }
 
+            //Var13 is the location in the world?
             bcm var13 = world.s(coordinates);
             if(var13 != null) {
                if(var13 instanceof vq) {
@@ -81,9 +87,9 @@ public class cm extends z {
             }
 
             bec Block2Set = block.a(SomeSpecificArgument);
-            BlockTracker.logger.info("aqu: ", String.valueOf(world));
-            BlockTracker.logger.info("dt: ", String.valueOf(coordinates));
-            BlockTracker.logger.info("bec: ", String.valueOf(Block2Set));
+            logger.info("aqu: ", String.valueOf(world));
+            logger.info("dt: ", String.valueOf(coordinates));
+            logger.info("bec: ", String.valueOf(Block2Set));
             if(!world.a(coordinates, Block2Set, 2)) {
                try {
 				throw new di("commands.setblock.noChange", new Object[0]);
@@ -104,7 +110,7 @@ public class cm extends z {
 
                world.b(coordinates, Block2Set.c());
                sender.a(ag.b, 1);
-               BlockTracker.logger.info("var6: ", world);
+               logger.info("var6: ", world);
                a(sender, this, "commands.setblock.success", new Object[0]);
             }
          }

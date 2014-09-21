@@ -85,7 +85,8 @@ public class BlockTrackerSQL {
 					+ "`y` VARCHAR(45) NOT NULL, "
 					+ "`z` VARCHAR(45) NOT NULL, "
 					+ "`time` VARCHAR(45) NOT NULL, "
-					+ "`block` VARCHAR(45) NOT NULL, "
+					+ "`block` VARCHAR(255) NOT NULL, "
+					+ "`event` VARCHAR(45) NOT NULL, "
 					+ "PRIMARY KEY (`UID`));";
 			statement.execute(createTable);
 		} catch (SQLException e) {
@@ -106,11 +107,12 @@ public class BlockTrackerSQL {
 			String z, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
+		String event = "BlockBreak";
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTracker.database + ";";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`) VALUES ('"
+			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, 'event') VALUES ('"
 					+ player
 					+ "', '"
 					+ x
@@ -119,7 +121,7 @@ public class BlockTrackerSQL {
 					+ "', '"
 					+ z
 					+ "', '"
-					+ time + "', '" + block + "'" + ")" + ";";
+					+ time + "', '" + block + "', '" + event + "'" + ")" + ";";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
