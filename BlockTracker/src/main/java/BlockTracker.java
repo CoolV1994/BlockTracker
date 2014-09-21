@@ -47,39 +47,26 @@ public class BlockTracker extends Thread {
 	}
 
 	//Called when a player breaks a block
-	public void BlockBreakEvent(aqu world, dt coords, bec blocktype, ahd player) {
+	public void BlockBreakEvent(aqu world, dt BRcoords, bec blocktype, ahd player) {
 		if (Track) {
 			String BlockType = String.valueOf(blocktype);
 
 			//Converts the dt object to X, Y, and Z variables
-			String BlockCoordsRaw = String.valueOf(coords);
-			String BlockCoordsLessRaw = BlockCoordsRaw.substring(5);
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(",", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("}", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("=", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("y", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("z", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(" ", "/");
-			String[] BlockCoordsArray = BlockCoordsLessRaw.split("/");
-			String X = BlockCoordsArray[0];
-			String Y = BlockCoordsArray[1];
-			String Z = BlockCoordsArray[2];
+			int X = BRcoords.n();
+			int Y = BRcoords.o();
+			int Z = BRcoords.p();
 			
 			//Isolates the playername from the ahd object
-			String PlayerRaw = String.valueOf(player);
-			String[] PlayerSplitArray = PlayerRaw.split("/");
-			String PlayerLessRaw = PlayerSplitArray[0];
-			String QuotedPlayer = PlayerLessRaw.substring(3);
-			String Player = QuotedPlayer.replace("'", "");
+			String Player = player.d_();
 
 			//Attempting to replace destroyed block with the exact same block
 			//at the exact same coordiantes (in the same world)
 			logger.info("setting block?");
 			logger.info(world);
-			logger.info(coords);
+			logger.info(BRcoords);
 			logger.info(blocktype);
-			world.a(coords, blocktype, 2);
-			world.b(coords, blocktype.c());
+			world.a(BRcoords, blocktype, 2);
+			world.b(BRcoords, blocktype.c());
 			//Insert to DB
 			BlockTrackerSQL.insertBlockBreak(Player, X, Y, Z, getTime(), BlockType);
 		}
@@ -95,32 +82,23 @@ public class BlockTracker extends Thread {
 	//Called when a player places a block
 	//TODO WIP
 	@SuppressWarnings(value = { "unused" })
-	public void BlockPlaceEvent(aqu var1, dt var2, bec var3, xm var4, amj var5) {
+	public void BlockPlaceEvent(aqu var1, dt BPcoords, bec var3, xm var4, amj var5) {
 		if (Track == true) {
-			//aqu.a(dt, bec, 2)
-			//WorldObject.a(CoordinateObject, BlockObject, 2) 
 			String BlockType = String.valueOf(var3);
 
 			//Converts the dt object to X, Y, and Z variables
-			String BlockCoordsRaw = String.valueOf(var2);
-			String BlockCoordsLessRaw = BlockCoordsRaw.substring(5);
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(",", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("}", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("=", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("y", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("z", "");
-			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(" ", "/");
-			String[] BlockCoordsArray = BlockCoordsLessRaw.split("/");
-			String X = BlockCoordsArray[0];
-			String Y = BlockCoordsArray[1];
-			String Z = BlockCoordsArray[2];
+			int X = BPcoords.n();
+			int Y = BPcoords.o();
+			int Z = BPcoords.p();
 
 			//Isolates the playername from the ahd object
-			String PlayerRaw = String.valueOf(var4);
-			String[] PlayerSplitArray = PlayerRaw.split("/");
-			String PlayerLessRaw = PlayerSplitArray[0];
-			String QuotedPlayer = PlayerLessRaw.substring(3);
-			String Player = QuotedPlayer.replace("'", "");
+			//String Player = var4.d_();
+			
+			logger.info(X + Y + Z);
+			logger.info(var1);
+			logger.info(var3);
+			logger.info(var4);
+			logger.info(var5);
 
 			//TODO
 			//Make SQL function for inserting block placement
