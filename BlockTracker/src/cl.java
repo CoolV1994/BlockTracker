@@ -48,6 +48,8 @@ public class cl extends ab implements y {
       this.a(new db());
       this.a(new bj());
       this.a(new BlockTrackerCommand());
+      //TODO
+      //BlockTrackerCommand is registered here.
       if(MinecraftServer.M().ad()) {
          this.a(new bz());
          this.a(new bd());

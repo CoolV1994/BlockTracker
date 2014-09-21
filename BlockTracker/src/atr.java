@@ -544,6 +544,7 @@ private static final oa a = new oa("air");
    public void a(aqu var1, dt var2, bec var3, xm var4, amj var5) {
 	   blocktracker.BlockPlaceEvent(var1, var2, var3, var4, var5);
 	   //TODO
+	   //Calls BlockPlaceEvent in BlockTracker
    }
 
    public atr c(String var1) {
@@ -592,17 +593,12 @@ private static final oa a = new oa("air");
       return this;
    }
 
-   
-   //Please not this method is called upon any BlockBreak
-   //And usually does nothing! (It's a great place to hook!)
    public void a(aqu var1, dt var2, bec var3, ahd var4) {
 	   blocktracker.BlockBreakEvent(var1, var2, var3, var4);
 	   //TODO
-	   //Hello there, Geistes here.
-	   //This is where BlockTracker hooks into NMS.
+	   //Calls BlockBreakEvent in BlockTracker
    }
    
-   //Just incase your interested iirc this one is adjacent block updates.
    public void k(aqu var1, dt var2) {
    }
 

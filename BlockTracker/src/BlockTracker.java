@@ -1,7 +1,6 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,11 +45,13 @@ public class BlockTracker extends Thread {
 		}
 	}
 
-	public void BlockBreakEvent(aqu var1, dt var2, bec var3, ahd var4) {
+	//Called when a player breaks a block
+	public void BlockBreakEvent(aqu world, dt coords, bec blocktype, ahd player) {
 		if (Track) {
-			String BlockType = String.valueOf(var3);
+			String BlockType = String.valueOf(blocktype);
 
-			String BlockCoordsRaw = String.valueOf(var2);
+			//Converts the dt object to X, Y, and Z variables
+			String BlockCoordsRaw = String.valueOf(coords);
 			String BlockCoordsLessRaw = BlockCoordsRaw.substring(5);
 			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(",", "");
 			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("}", "");
@@ -62,20 +63,24 @@ public class BlockTracker extends Thread {
 			String X = BlockCoordsArray[0];
 			String Y = BlockCoordsArray[1];
 			String Z = BlockCoordsArray[2];
-
-			String PlayerRaw = String.valueOf(var4);
+			
+			//Isolates the playername from the ahd object
+			String PlayerRaw = String.valueOf(player);
 			String[] PlayerSplitArray = PlayerRaw.split("/");
 			String PlayerLessRaw = PlayerSplitArray[0];
 			String QuotedPlayer = PlayerLessRaw.substring(3);
 			String Player = QuotedPlayer.replace("'", "");
 
+			//Attempting to replace destroyed block with the exact same block
+			//at the exact same coordiantes (in the same world)
 			logger.info("setting block?");
-			logger.info(var1);
-			logger.info(var2);
-			logger.info(var3);
-			var1.a(var2, var3, 2);
-			var1.b(var2, var3.c());
-			//BlockTrackerSQL.blockTrack(Player, X, Y, Z, getTime(), BlockType);
+			logger.info(world);
+			logger.info(coords);
+			logger.info(blocktype);
+			world.a(coords, blocktype, 2);
+			world.b(coords, blocktype.c());
+			//Insert to DB
+			BlockTrackerSQL.insertBlockBreak(Player, X, Y, Z, getTime(), BlockType);
 		}
 	}
 
@@ -86,12 +91,16 @@ public class BlockTracker extends Thread {
 
 	}
 
+	//Called when a player places a block
+	//TODO WIP
+	@SuppressWarnings(value = { "unused" })
 	public void BlockPlaceEvent(aqu var1, dt var2, bec var3, xm var4, amj var5) {
 		if (Track == true) {
 			//aqu.a(dt, bec, 2)
 			//WorldObject.a(CoordinateObject, BlockObject, 2) 
 			String BlockType = String.valueOf(var3);
 
+			//Converts the dt object to X, Y, and Z variables
 			String BlockCoordsRaw = String.valueOf(var2);
 			String BlockCoordsLessRaw = BlockCoordsRaw.substring(5);
 			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(",", "");
@@ -105,13 +114,16 @@ public class BlockTracker extends Thread {
 			String Y = BlockCoordsArray[1];
 			String Z = BlockCoordsArray[2];
 
+			//Isolates the playername from the ahd object
 			String PlayerRaw = String.valueOf(var4);
 			String[] PlayerSplitArray = PlayerRaw.split("/");
 			String PlayerLessRaw = PlayerSplitArray[0];
 			String QuotedPlayer = PlayerLessRaw.substring(3);
 			String Player = QuotedPlayer.replace("'", "");
 
-			//BlockTrackerSQL.blockTrack(Player, X, Y, Z, getTime(), BlockType);
+			//TODO
+			//Make SQL function for inserting block placement
+			//BlockTrackerSQL.insertBlockPlace(Player, X, Y, Z, getTime(), BlockType);
 		}
 
 	}
