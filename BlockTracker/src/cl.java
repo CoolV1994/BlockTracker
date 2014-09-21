@@ -1,4 +1,14 @@
+
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
+
 import net.minecraft.server.MinecraftServer;
 
 public class cl extends ab implements y {
@@ -47,9 +57,42 @@ public class cl extends ab implements y {
       this.a(new dg());
       this.a(new db());
       this.a(new bj());
-      this.a(new BlockTrackerCommand());
-      //TODO
-      //BlockTrackerCommand is registered here.
+      
+      // Begin TerrorBite's dynamic command class loading code
+      Logger log = LogManager.getLogger();
+      Set<ClassInfo> classes = null;
+      try {
+    	  classes = ClassPath.from(ClassLoader.getSystemClassLoader()).getTopLevelClasses();
+      } catch (IOException e) {
+    	  // Abort
+    	  log.warn("Failed dynamically loading command classes, only vanilla commands will be available", e );
+      }
+      if(classes != null) {
+	      for(ClassInfo info : classes) {
+	    	  if(info.getName().endsWith("Command")) {
+	    		  log.info(String.format("Detected potential command class %s, attempting to load it", info.getName()));
+	    		  Class<? extends z> cls = null;
+	    		  try {
+	    			  cls = info.load().asSubclass(z.class);
+	    		  } catch (ClassCastException e) {
+	    			  LogManager.getLogger().warn(String.format("Ignoring class %s: Invalid command class: Does not extend z", info.getName()));
+	    			  continue;
+	    		  }
+	    		  try {
+	    			  // Register command into Minecraft
+	    			  this.a(cls.newInstance());
+	    			  log.info(String.format("Successfully loaded and registered %s", info.getName()));
+	    			  
+	    		  } catch (InstantiationException e) {
+	    			  log.error(String.format("Failed to instantiate %s", info.getName()), e);
+	    		  } catch (IllegalAccessException e) {
+	    			  log.error(String.format("Failed to instantiate %s", info.getName()), e);
+	    		  }
+	    	  }
+	      }
+      }
+      // End TerrorBite's dynamic command class loading code
+      
       if(MinecraftServer.M().ad()) {
          this.a(new bz());
          this.a(new bd());
