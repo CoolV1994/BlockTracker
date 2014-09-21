@@ -1,6 +1,7 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,7 +69,13 @@ public class BlockTracker extends Thread {
 			String QuotedPlayer = PlayerLessRaw.substring(3);
 			String Player = QuotedPlayer.replace("'", "");
 
-			BlockTrackerSQL.blockTrack(Player, X, Y, Z, getTime(), BlockType);
+			logger.info("setting block?");
+			logger.info(var1);
+			logger.info(var2);
+			logger.info(var3);
+			var1.a(var2, var3, 2);
+			var1.b(var2, var3.c());
+			//BlockTrackerSQL.blockTrack(Player, X, Y, Z, getTime(), BlockType);
 		}
 	}
 
@@ -80,12 +87,32 @@ public class BlockTracker extends Thread {
 	}
 
 	public void BlockPlaceEvent(aqu var1, dt var2, bec var3, xm var4, amj var5) {
-		logger.warn("BlockPlaceEvent");
-		logger.info("AQU Var1: " + var1);
-		logger.info("AQU Var1: " + var2);
-		logger.info("AQU Var1: " + var3);
-		logger.info("AQU Var1: " + var4);
-		logger.info("AQU Var1: " + var5);
+		if (Track == true) {
+			//aqu.a(dt, bec, 2)
+			//WorldObject.a(CoordinateObject, BlockObject, 2) 
+			String BlockType = String.valueOf(var3);
+
+			String BlockCoordsRaw = String.valueOf(var2);
+			String BlockCoordsLessRaw = BlockCoordsRaw.substring(5);
+			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(",", "");
+			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("}", "");
+			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("=", "");
+			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("y", "");
+			BlockCoordsLessRaw = BlockCoordsLessRaw.replace("z", "");
+			BlockCoordsLessRaw = BlockCoordsLessRaw.replace(" ", "/");
+			String[] BlockCoordsArray = BlockCoordsLessRaw.split("/");
+			String X = BlockCoordsArray[0];
+			String Y = BlockCoordsArray[1];
+			String Z = BlockCoordsArray[2];
+
+			String PlayerRaw = String.valueOf(var4);
+			String[] PlayerSplitArray = PlayerRaw.split("/");
+			String PlayerLessRaw = PlayerSplitArray[0];
+			String QuotedPlayer = PlayerLessRaw.substring(3);
+			String Player = QuotedPlayer.replace("'", "");
+
+			//BlockTrackerSQL.blockTrack(Player, X, Y, Z, getTime(), BlockType);
+		}
 
 	}
 
