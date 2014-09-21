@@ -71,11 +71,11 @@ public class cl extends ab implements y {
 	      for(ClassInfo info : classes) {
 	    	  if(info.getName().endsWith("Command")) {
 	    		  log.info(String.format("Detected potential command class %s, attempting to load it", info.getName()));
-	    		  Class<? extends z> cls = null;
+	    		  Class<? extends ac> cls = null;
 	    		  try {
-	    			  cls = info.load().asSubclass(z.class);
+	    			  cls = info.load().asSubclass(ac.class);
 	    		  } catch (ClassCastException e) {
-	    			  LogManager.getLogger().warn(String.format("Ignoring class %s: Invalid command class: Does not extend z", info.getName()));
+	    			  LogManager.getLogger().warn(String.format("Ignoring class %s: Invalid command class: Does not implement ac", info.getName()));
 	    			  continue;
 	    		  }
 	    		  try {
