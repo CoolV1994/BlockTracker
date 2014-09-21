@@ -103,8 +103,8 @@ public class BlockTrackerSQL {
 		return true;
 	}
 
-	public static boolean insertBlockBreak(String player, String x, String y,
-			String z, String time, String block) {
+	public static boolean insertBlockBreak(String player, int x, int y,
+			int z, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
 		String event = "BlockBreak";
@@ -112,7 +112,7 @@ public class BlockTrackerSQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE " + BlockTracker.database + ";";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, 'event') VALUES ('"
+			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
 					+ player
 					+ "', '"
 					+ x
