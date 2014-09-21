@@ -1,5 +1,8 @@
+
 import java.util.List;
 
+//Example for setting blocks.
+//Not apart of BlockTracker
 public class cm extends z {
 
    public String c() {
@@ -109,7 +112,7 @@ public class cm extends z {
       }
    }
 
-   public List a(ae var1, String[] var2, dt var3) {
+   public List<?> a(ae var1, String[] var2, dt var3) {
       return var2.length > 0 && var2.length <= 3?a(var2, 0, var3):(var2.length == 4?a(var2, atr.c.c()):(var2.length == 6?a(var2, new String[]{"replace", "destroy", "keep"}):null));
    }
 
@@ -119,3 +122,4 @@ public int compareTo(Object arg0) {
 	return 0;
 }
 }
+

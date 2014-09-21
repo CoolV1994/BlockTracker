@@ -1,3 +1,4 @@
+
 import java.io.OutputStream;
 import java.util.Properties;
 import java.sql.Connection;
@@ -5,6 +6,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
+//TODO
+//Need to resdesign table to allow for different events
+//BlockBreak
+//BlockPlace
 public class BlockTrackerSQL {
 
 	Properties prop = new Properties();
@@ -30,7 +36,7 @@ public class BlockTrackerSQL {
 	}
 
 	// Returns true if DB exists or if it has been created.
-	// Returns false if error, should stop mod.
+	// Returns false if error.
 	// Server should continue to run.
 	public static boolean checkDB() {
 		Connection connection = null;
@@ -63,7 +69,6 @@ public class BlockTrackerSQL {
 	}
 
 	// Returns true if Table exists or if it has been created.
-	// Returns false if error, should stop mod.
 	// Server should continue to run.
 	public static boolean checkTable() {
 		Connection connection = null;
@@ -98,7 +103,7 @@ public class BlockTrackerSQL {
 		return true;
 	}
 
-	public static boolean blockTrack(String player, String x, String y,
+	public static boolean insertBlockBreak(String player, String x, String y,
 			String z, String time, String block) {
 		Connection connection = null;
 		Statement statement = null;
@@ -148,3 +153,4 @@ public class BlockTrackerSQL {
 	}
 
 }
+

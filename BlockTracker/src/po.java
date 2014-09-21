@@ -1,7 +1,7 @@
+
 import com.google.common.collect.Lists;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Proxy;
 import java.net.UnknownHostException;
@@ -16,7 +16,6 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@SuppressWarnings("unused")
 public class po extends MinecraftServer implements pj {
 
    private static final Logger j = LogManager.getLogger();
@@ -445,3 +444,4 @@ public class po extends MinecraftServer implements pj {
    }
 
 }
+

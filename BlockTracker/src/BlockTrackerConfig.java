@@ -1,3 +1,4 @@
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -41,7 +42,6 @@ public class BlockTrackerConfig {
             return false;
         }
         BlockTracker.logger.info("Config: OK");
-        BlockTracker.logger.info("Config: OK");
         return true;
     }
 
@@ -50,7 +50,6 @@ public class BlockTrackerConfig {
 
             output = new FileOutputStream("BlockTrackerDB.config");
 
-            // set the properties value
             prop.setProperty("host", "localhost");
             prop.setProperty("database", "blocktracker");
             prop.setProperty("dbuser", "username");
@@ -75,3 +74,4 @@ public class BlockTrackerConfig {
     }
 
 }
+
