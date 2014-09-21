@@ -40,8 +40,6 @@
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
 				<excludes>
-					<exclude>minecraft_server.*.jar</exclude>
-					<exclude>README.txt</exclude>
 				</excludes>
 			</resource>
 		</resources>
@@ -54,12 +52,25 @@
 		</dependency>
 		<dependency>
 			<groupId>net.minecraft</groupId>
-			<artifactId>minecraft_server.1.8</artifactId>
+			<artifactId>minecraft_server</artifactId>
 			<version>1.8</version>
 			<scope>compile</scope>
 			<!-- <systemPath>${project.basedir}/src/main/resources/minecraft_server.1.8.jar</systemPath> -->
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+	    <id>mc-server-repo</id>
+	    <releases>
+	        <enabled>true</enabled>
+	        <checksumPolicy>ignore</checksumPolicy>
+	    </releases>
+	    <snapshots>
+	        <enabled>false</enabled>
+	    </snapshots>
+	    <url>file://${project.basedir}/mc-server-repo</url>
+		</repository>
+	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

@@ -4,3 +4,7 @@
 dependency-reduced-pom.xml
 .classpath
 .settings/
+
+# Do not distribute:
+minecraft_server-1.8.jar
+minecraft_server.*.jar
