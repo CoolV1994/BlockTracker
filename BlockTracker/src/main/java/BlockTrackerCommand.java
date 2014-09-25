@@ -21,9 +21,11 @@ public class BlockTrackerCommand extends z {
 		return "usage: bt usage";
 	}
 
-	public void a(ae var1, String[] var2) {
-		String test = "test";
-		var1.a(new hz("Response 1", test));
+	public void a(ae CommandSender, String[] Arguments) {
+		CommandSender.a(new hy("Response 1"));
+		aqu world = CommandSender.e();
+		dt BBcoords = CommandSender.c();
+		world.a(BBcoords, atr.d(7), 3);
 	}
 
 	@Override

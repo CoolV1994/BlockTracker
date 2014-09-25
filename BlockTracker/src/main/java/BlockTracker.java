@@ -6,11 +6,7 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-//////////
-//Geistes's BlockTracker
-//Minecraft 1.8 Vanilla
-//Under MIT License
-//////////
+
 
 public class BlockTracker extends Thread {
 
@@ -47,26 +43,18 @@ public class BlockTracker extends Thread {
 	}
 
 	//Called when a player breaks a block
-	public void BlockBreakEvent(aqu world, dt BRcoords, bec blocktype, ahd player) {
+	public void BlockBreakEvent(aqu world, dt BBcoords, bec blocktype, ahd player) {
 		if (Track) {
 			String BlockType = String.valueOf(blocktype);
 
 			//Converts the dt object to X, Y, and Z variables
-			int X = BRcoords.n();
-			int Y = BRcoords.o();
-			int Z = BRcoords.p();
+			int X = BBcoords.n();
+			int Y = BBcoords.o();
+			int Z = BBcoords.p();
 			
 			//Isolates the playername from the ahd object
 			String Player = player.d_();
 
-			//Attempting to replace destroyed block with the exact same block
-			//at the exact same coordiantes (in the same world)
-			logger.info("setting block?");
-			logger.info(world);
-			logger.info(BRcoords);
-			logger.info(blocktype);
-			world.a(BRcoords, blocktype, 2);
-			world.b(BRcoords, blocktype.c());
 			//Insert to DB
 			BlockTrackerSQL.insertBlockBreak(Player, X, Y, Z, getTime(), BlockType);
 		}
@@ -91,14 +79,13 @@ public class BlockTracker extends Thread {
 			int Y = BPcoords.o();
 			int Z = BPcoords.p();
 
-			//Isolates the playername from the ahd object
-			//String Player = var4.d_();
+			//TODO
+			//Trace the function and add  the hook higher
+			//where we can retrieve the playername
 			
-			logger.info(X + Y + Z);
-			logger.info(var1);
-			logger.info(var3);
-			logger.info(var4);
-			logger.info(var5);
+			//Isolates the playername from the ahd object
+			//String Player = var?.d_();
+			
 
 			//TODO
 			//Make SQL function for inserting block placement
