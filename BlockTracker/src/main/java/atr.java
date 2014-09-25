@@ -3,8 +3,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.logging.log4j.LogManager;
-
 public class atr {
 
 private static final oa a = new oa("air");
@@ -603,11 +601,6 @@ private static final oa a = new oa("air");
 	   blocktracker.BlockBreakEvent(var1, var2, var3, var4);
 	   //TODO
 	   //Calls BlockBreakEvent in BlockTracker
-	   try {
-		throw new Exception();
-	} catch (Exception e) {
-		LogManager.getLogger().info("Block Break", e);
-	}
    }
    
    public void k(aqu var1, dt var2) {

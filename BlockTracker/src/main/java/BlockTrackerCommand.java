@@ -14,18 +14,24 @@ public class BlockTrackerCommand extends z {
 	}
 
 	public int a() {
-		return 0;
+		return 5;
 	}
 
 	public String c(ae var1) {
 		return "usage: bt usage";
 	}
 
+	//WIP
+	//TODO
 	public void a(ae CommandSender, String[] Arguments) {
-		CommandSender.a(new hy("Response 1"));
-		aqu world = CommandSender.e();
-		dt BBcoords = CommandSender.c();
-		world.a(BBcoords, atr.d(7), 3);
+		String Player = CommandSender.d_();
+		int ID = Player.hashCode();
+		if(BlockTrackerTool.isPlayerOnList(Player)){
+			BlockTrackerTool.terms.remove(ID);
+			CommandSender.a(new hy("BT disabled"));
+		}
+		BlockTrackerTool.terms.set(ID, Player);
+		CommandSender.a(new hy("BT enabled"));
 	}
 
 	@Override

@@ -174,6 +174,11 @@ public class qx {
    }
 
    public boolean b(dt var1) {
+	   //WIP
+	   //TODO
+	   if(BlockTrackerTool.getPlayerBTTool((ahd)this.b, var1)){
+		   return false;
+	   }
       if(this.c.d() && this.b.bz() != null && this.b.bz().b() instanceof anm) {
          return false;
       } else {
