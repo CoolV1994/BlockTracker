@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 
 
@@ -7,7 +6,7 @@ import java.util.List;
 //TODO
 public class BlockTrackerTool {
 	
-	static List<String> terms = new ArrayList<String>();
+	static LinkedList<String> terms = new LinkedList<String>();
 	
 	public static boolean getPlayerBTTool(ahd Player, dt coords)
 	{
@@ -28,11 +27,11 @@ public class BlockTrackerTool {
 
 	public static boolean isPlayerOnList(String Player)
 	{
-		for(String str: terms) {
-		    if(str.trim().contains(Player)){
+		if(!(terms.isEmpty() || terms.size() == 0)){
+			if(terms.contains(Player)){
 		        return true;
+			}
 		    }
-		}
 		return false;
 	}
 	

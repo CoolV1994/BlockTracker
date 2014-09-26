@@ -14,7 +14,7 @@ public class BlockTrackerCommand extends z {
 	}
 
 	public int a() {
-		return 5;
+		return 0;
 	}
 
 	public String c(ae var1) {
@@ -25,13 +25,14 @@ public class BlockTrackerCommand extends z {
 	//TODO
 	public void a(ae CommandSender, String[] Arguments) {
 		String Player = CommandSender.d_();
-		int ID = Player.hashCode();
 		if(BlockTrackerTool.isPlayerOnList(Player)){
+			int ID = BlockTrackerTool.terms.lastIndexOf(Player);
 			BlockTrackerTool.terms.remove(ID);
 			CommandSender.a(new hy("BT disabled"));
-		}
-		BlockTrackerTool.terms.set(ID, Player);
+		} else {
+		BlockTrackerTool.terms.add(Player);
 		CommandSender.a(new hy("BT enabled"));
+		}
 	}
 
 	@Override
