@@ -14,23 +14,23 @@ public class BlockTrackerCommand extends z {
 	}
 
 	public int a() {
-		return 0;
+		return 4;
 	}
 
-	public String c(ae var1) {
-		return "usage: bt usage";
+	public String c(ae CommandSender) {
+		return "/bt  --  Toggles LogBlock tool. Place a log (or break with a log inhand) to get edits on that position.";
 	}
 
 	//WIP
 	//TODO
 	public void a(ae CommandSender, String[] Arguments) {
 		String Player = CommandSender.d_();
-		if(BlockTrackerTool.isPlayerOnList(Player)){
-			int ID = BlockTrackerTool.terms.lastIndexOf(Player);
-			BlockTrackerTool.terms.remove(ID);
+		if(BlockTrackerTool.isPlayerTooled(Player)){
+			int ID = BlockTrackerTool.TooledPlayers.lastIndexOf(Player);
+			BlockTrackerTool.TooledPlayers.remove(ID);
 			CommandSender.a(new hy("BT disabled"));
 		} else {
-		BlockTrackerTool.terms.add(Player);
+		BlockTrackerTool.TooledPlayers.add(Player);
 		CommandSender.a(new hy("BT enabled"));
 		}
 	}

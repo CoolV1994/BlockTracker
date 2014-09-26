@@ -544,11 +544,10 @@ private static final oa a = new oa("air");
    }
 
    public void a(aqu var1, dt var2, bec var3, xm var4, amj var5) {
-	   ahd var6 = (ahd)qx.b;
-	   BlockTracker.logger.info(var6);
 	   blocktracker.BlockPlaceEvent(var1, var2, var3, var4, var5);
 	   //TODO
-	   //Calls BlockPlaceEvent in BlockTracker
+	   //Trace stack, figure out how to cancel block placement.
+	   //Work for log tool.
    }
 
    public atr c(String var1) {

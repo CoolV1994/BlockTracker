@@ -1,14 +1,10 @@
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 //Example for setting blocks.
 //Not apart of BlockTracker
 
 public class cm extends z {
-
-	public static final Logger logger = LogManager.getLogger();
 
 	public String c() {
 		return "setblock";
@@ -29,16 +25,13 @@ public class cm extends z {
 		} else {
 			sender.a(ag.b, 0);
 			dt coordinates = a(sender, arguments, 0, false); // Parameters 0 1 2 are the x y z coords
-			logger.info("dt var3 27: ", coordinates);
 			atr block = z.g(sender, arguments[3]); // Param 3 is block name, z.g() parses name and returns atr
-			logger.info("atr var4 29: ", block);
 			int blockData = 0; // Param 4, if specified, is the block data value, defaults to 0
 			if(arguments.length >= 5) {
 				blockData = a(arguments[4], 0, 15);
 			}
 
 			aqu world = sender.e(); // Get world that sender is in
-			logger.info("aqu var6 36: ", world);
 			if(!world.e(coordinates)) {
 				throw new di("commands.setblock.outOfWorld", new Object[0]);
 			} else {
@@ -75,9 +68,6 @@ public class cm extends z {
 				}
 
 				bec Block2Set = block.a(blockData);
-				logger.info("aqu: ", String.valueOf(world));
-				logger.info("dt: ", String.valueOf(coordinates));
-				logger.info("bec: ", String.valueOf(Block2Set));
 				if(!world.a(coordinates, Block2Set, 2)) {
 					throw new di("commands.setblock.noChange", new Object[0]);
 				} else {
@@ -93,7 +83,6 @@ public class cm extends z {
 
 					world.b(coordinates, Block2Set.c());
 					sender.a(ag.b, 1);
-					logger.info("var6: ", world);
 					a(sender, this, "commands.setblock.success", new Object[0]);
 				}
 			}
