@@ -1,15 +1,14 @@
 import java.util.LinkedList;
 
-
-
-//WIP
-//TODO
 public class BlockTrackerTool {
 	
 	static LinkedList<String> TooledPlayers = new LinkedList<String>();
 	
 	public static void getCoordEdits(ahd Player, dt coords)
 	{
+		//TODO
+		//Fetch all SQL edits @ DT coords
+		//Order them in a list or some shit like that
 		Player.a(new hy("BlockBroken return SQL data."));
 	}
 
@@ -22,5 +21,6 @@ public class BlockTrackerTool {
 		    }
 		return false;
 	}
+	
 	
 }

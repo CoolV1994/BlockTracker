@@ -90,7 +90,26 @@ public class qx {
 
 	}
 
+	
+    /**
+     * onBlockClicked
+     * if not creative, it calls destroyBlockInWorldPartially untill the block is broken first. par2 is the specific
+     * side. tryHarvestBlock can also be the result of this call
+     * DT is the block's coordinates.
+     * EJ is the side of the block clicked.
+     */
 	public void a(dt var1, ej var2) {
+		//BlockTrackerTool hook BEGIN
+		ahd ahdPlayer = (ahd) this.b;
+		String Player = ahdPlayer.d_();
+		if (BlockTrackerTool.isPlayerTooled(Player)) { //Checks if the tool is enabled.
+			if (!(ahdPlayer.bg.h() == null)) { //Makes sure they are holding something.
+				if (ahdPlayer.bg.h().b().a().equals("tile.log")) { //Checks the item held is a Log block.
+					BlockTrackerTool.getCoordEdits(ahdPlayer, var1); //Get edits to the coords.
+				}
+			}
+		}
+		//BlockTrackerTool hook END
 		if (this.d()) {
 			if (!this.a.a((ahd) null, var1, var2)) {
 				this.b(var1);
@@ -174,20 +193,23 @@ public class qx {
 		return var3;
 	}
 
+    /**
+     * tryHarvestBlock
+     * Attempts to harvest a block at the given coordinate
+     * DT is the block's coordinates.
+     */
 	public boolean b(dt var1) {
-		//TODO
-		//Move this to be called when a player HITS a block with a log.
-		//Not destroys.
+		//BlockTrackerTool code BEGIN
 		ahd ahdPlayer = (ahd) this.b;
 		String Player = ahdPlayer.d_();
-		if (BlockTrackerTool.isPlayerTooled(Player)) {
-			if (!(ahdPlayer.bg.h() == null)) {
-				if (ahdPlayer.bg.h().b().a().equals("tile.log")) {
-					BlockTrackerTool.getCoordEdits(ahdPlayer, var1);
+		if (BlockTrackerTool.isPlayerTooled(Player)) { //Checks if the tool is enabled.
+			if (!(ahdPlayer.bg.h() == null)) { //Makes sure they are holding something.
+				if (ahdPlayer.bg.h().b().a().equals("tile.log")) { //Checks the item held is a Log block.
 					return false;
 				}
 			}
 		}
+		//BlockTrackerTool code END
 		if (this.c.d() && this.b.bz() != null && this.b.bz().b() instanceof anm) {
 			return false;
 		} else {

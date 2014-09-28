@@ -543,6 +543,15 @@ private static final oa a = new oa("air");
       return this.a(var2);
    }
 
+   /**
+    * onPostBlockPlaced
+    * Called after a block is placed
+    * AQU = World
+    * DT = Coordinate
+    * BEC = Blocktype
+    * XM = EntityLivingBase
+    * AMJ = ItemStack
+    */
    public void a(aqu var1, dt var2, bec var3, xm var4, amj var5) {
 	   blocktracker.BlockPlaceEvent(var1, var2, var3, var4, var5);
 	   //TODO
@@ -596,10 +605,16 @@ private static final oa a = new oa("air");
       return this;
    }
 
+   /**
+    * onBlockHarvested
+    * Called when the block is attempted to be harvested
+    * AQU = World
+    * DT = Coordinate
+    * BEC = Blocktype
+    * AHD = EntityPlayer
+    */
    public void a(aqu var1, dt var2, bec var3, ahd var4) {
 	   blocktracker.BlockBreakEvent(var1, var2, var3, var4);
-	   //TODO
-	   //Calls BlockBreakEvent in BlockTracker
    }
    
    public void k(aqu var1, dt var2) {

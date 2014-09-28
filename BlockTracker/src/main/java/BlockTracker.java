@@ -60,37 +60,32 @@ public class BlockTracker extends Thread {
 		}
 	}
 
-	public String getTime() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		return dateFormat.format(date);
-
-	}
-
 	//Called when a player places a block
 	//TODO WIP
 	@SuppressWarnings(value = { "unused" })
 	public void BlockPlaceEvent(aqu var1, dt BPcoords, bec var3, xm var4, amj var5) {
-		if (Track == true) {
+		if (Track) {
 			String BlockType = String.valueOf(var3);
 
 			//Converts the dt object to X, Y, and Z variables
 			int X = BPcoords.n();
 			int Y = BPcoords.o();
 			int Z = BPcoords.p();
-
-			//TODO
-			//Trace the function and add  the hook higher
-			//where we can retrieve the playername
 			
-			//Isolates the playername from the ahd object
-			//String Player = var?.d_();
+			//Isolates the playername from the xm object
+			String Player = var4.d_();
 			
-
 			//TODO
 			//Make SQL function for inserting block placement
 			//BlockTrackerSQL.insertBlockPlace(Player, X, Y, Z, getTime(), BlockType);
 		}
+
+	}
+	
+	public String getTime() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
 
 	}
 
