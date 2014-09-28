@@ -61,11 +61,9 @@ public class BlockTracker extends Thread {
 	}
 
 	//Called when a player places a block
-	//TODO WIP
-	@SuppressWarnings(value = { "unused" })
-	public void BlockPlaceEvent(aqu var1, dt BPcoords, bec var3, xm var4, amj var5) {
+	public void BlockPlaceEvent(aqu world, dt BPcoords, bec blocktype, xm entitylivingbase, amj itemstack) {
 		if (Track) {
-			String BlockType = String.valueOf(var3);
+			String BlockType = String.valueOf(blocktype);
 
 			//Converts the dt object to X, Y, and Z variables
 			int X = BPcoords.n();
@@ -73,11 +71,10 @@ public class BlockTracker extends Thread {
 			int Z = BPcoords.p();
 			
 			//Isolates the playername from the xm object
-			String Player = var4.d_();
+			String Player = entitylivingbase.d_();
 			
-			//TODO
-			//Make SQL function for inserting block placement
-			//BlockTrackerSQL.insertBlockPlace(Player, X, Y, Z, getTime(), BlockType);
+
+			BlockTrackerSQL.insertBlockPlace(Player, X, Y, Z, getTime(), BlockType);
 		}
 
 	}

@@ -2,6 +2,7 @@
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.LogManager;
 
 public class atr {
 
@@ -46,7 +47,6 @@ private static final oa a = new oa("air");
    private String N;
    //BlockTracker
    BlockTracker blocktracker = new BlockTracker();
-   qx qx = new qx(null);
 
 
    public static int a(atr var0) {
@@ -553,10 +553,7 @@ private static final oa a = new oa("air");
     * AMJ = ItemStack
     */
    public void a(aqu var1, dt var2, bec var3, xm var4, amj var5) {
-	   blocktracker.BlockPlaceEvent(var1, var2, var3, var4, var5);
-	   //TODO
-	   //Trace stack, figure out how to cancel block placement.
-	   //Work for log tool.
+	   blocktracker.BlockPlaceEvent(var1, var2, var3, var4, var5);		
    }
 
    public atr c(String var1) {

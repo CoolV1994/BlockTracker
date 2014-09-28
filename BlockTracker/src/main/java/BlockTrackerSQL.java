@@ -1,7 +1,11 @@
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -133,6 +137,74 @@ public class BlockTrackerSQL {
 		closeStatement(statement);
 		closeConnection(connection);
 		return true;
+	}
+	
+	public static boolean insertBlockPlace(String player, int x, int y, int z,
+			String time, String block) {
+		Connection connection = null;
+		Statement statement = null;
+		String event = "BlockPlace";
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
+			String SelectDB = "USE " + BlockTracker.database + ";";
+			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
+					+ player
+					+ "', '"
+					+ x
+					+ "', '"
+					+ y
+					+ "', '"
+					+ z
+					+ "', '"
+					+ time + "', '" + block + "', '" + event + "'" + ")" + ";";
+			statement.execute(SelectDB);
+			statement.execute(Insert);
+		} catch (SQLException sqlException) {
+			BlockTracker.logger.warn("BlockTracker Disabled!", sqlException);
+			closeStatement(statement);
+			closeConnection(connection);
+			return false;
+		}
+		closeStatement(statement);
+		closeConnection(connection);
+		return true;
+	}
+	
+	public static List<String> getBlockRecord(int X, int Y, int Z, String event) {
+		
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs;
+		
+		 try{
+			 connection = getConnection();
+				statement = connection.createStatement();
+				String SelectDB = "USE " + BlockTracker.database + ";";
+				String Fetch = "SELECT * FROM `blockbreaks` WHERE `x`='" + X + "' AND `y`='" + Y + "' AND `z`='" + Z + "';";
+				statement.execute(SelectDB);
+				rs = statement.executeQuery(Fetch); 
+
+		        ArrayList<String> list= new ArrayList<String>();
+		        while (rs.next()) {
+		            list.add(rs.getString("player"));
+
+		            String[] result = new String[list.size()];
+		            result = list.toArray(result);
+
+		            for(int i =0; i<result.length; i++){
+		            	BlockTracker.logger.info(result[i]);
+		            }   
+		        }   
+
+		    }catch(SQLException ex){
+		    	BlockTracker.logger.warn(ex);
+		    }
+		
+		 closeConnection(connection);
+		 closeStatement(statement);
+		return null;
+		
 	}
 
 	public static void closeConnection(Connection connection) {

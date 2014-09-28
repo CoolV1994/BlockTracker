@@ -105,7 +105,7 @@ public class qx {
 		if (BlockTrackerTool.isPlayerTooled(Player)) { //Checks if the tool is enabled.
 			if (!(ahdPlayer.bg.h() == null)) { //Makes sure they are holding something.
 				if (ahdPlayer.bg.h().b().a().equals("tile.log")) { //Checks the item held is a Log block.
-					BlockTrackerTool.getCoordEdits(ahdPlayer, var1); //Get edits to the coords.
+					BlockTrackerTool.getCoordEdits(ahdPlayer, var1, "BlockBreak"); //Get edits to the coords.
 				}
 			}
 		}
