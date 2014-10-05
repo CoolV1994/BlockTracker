@@ -82,7 +82,7 @@ public class BlockTrackerSQL {
 			String sql = "USE " + BlockTracker.database + ";";
 			statement.execute(sql);
 			// Create Table
-			String createTable = "CREATE TABLE IF NOT EXISTS `blocktracker`.`blockbreaks` ("
+			String createTable = "CREATE TABLE IF NOT EXISTS `" + BlockTracker.database + "`.`blockbreaks` ("
 					+ "`UID` INT NOT NULL AUTO_INCREMENT, "
 					+ "`player` VARCHAR(45) NOT NULL, "
 					+ "`x` VARCHAR(45) NOT NULL, "
