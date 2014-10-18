@@ -1,11 +1,14 @@
+package RainbowBlockTracker;
+
+import PluginReference.ChatColor;
+import PluginReference.MC_Player;
+import PluginReference.MC_World;
+
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -14,7 +17,7 @@ import java.sql.Statement;
 //Need to resdesign table to allow for different events
 //BlockBreak
 //BlockPlace
-public class BlockTrackerSQL {
+public class SQL {
 
 	Properties prop = new Properties();
 	OutputStream output = null;
@@ -24,16 +27,16 @@ public class BlockTrackerSQL {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			BlockTracker.logger.warn("Disabled");
-			BlockTracker.logger.warn("mySQL dependencies error", e);
+			MyPlugin.logger.warning("Disabled");
+			MyPlugin.logger.warning("mySQL dependencies error" + e.getMessage());
 		}
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://"
-					+ BlockTracker.host, BlockTracker.dbuser,
-					BlockTracker.dbpass);
+					+ MyPlugin.host, MyPlugin.dbuser,
+					MyPlugin.dbpass);
 		} catch (SQLException err) {
-			BlockTracker.logger.warn("Disabled");
-			BlockTracker.logger.warn("mySQL connection error", err);
+			MyPlugin.logger.warning("Disabled");
+			MyPlugin.logger.warning("mySQL connection error" + err.getMessage());
 		}
 		return conn;
 	}
@@ -47,25 +50,25 @@ public class BlockTrackerSQL {
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
-			String sql = "CREATE DATABASE " + BlockTracker.database + ";";
+			String sql = "CREATE DATABASE " + MyPlugin.database + ";";
 			statement.executeUpdate(sql);
 		} catch (SQLException sqlException) {
 			if (sqlException.getErrorCode() == 1007) {
 				// Database already exists error
 				closeStatement(statement);
 				closeConnection(connection);
-				BlockTracker.logger.info("Database: OK");
+				MyPlugin.logger.info("Database: OK");
 				return true;
 			} else {
-				BlockTracker.logger
-						.warn("BlockTracker Disabled!", sqlException);
+				MyPlugin.logger
+						.warning("BlockTracker Disabled!" + sqlException.getMessage());
 				closeStatement(statement);
 				closeConnection(connection);
 				return false;
 			}
 		}
 		// Database created
-		BlockTracker.logger.info("Database: OK");
+		MyPlugin.logger.info("Database: OK");
 		closeStatement(statement);
 		closeConnection(connection);
 		return true;
@@ -79,12 +82,13 @@ public class BlockTrackerSQL {
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
-			String sql = "USE " + BlockTracker.database + ";";
+			String sql = "USE " + MyPlugin.database + ";";
 			statement.execute(sql);
 			// Create Table
-			String createTable = "CREATE TABLE IF NOT EXISTS `" + BlockTracker.database + "`.`blockbreaks` ("
+			String createTable = "CREATE TABLE IF NOT EXISTS `" + MyPlugin.database + "`.`blockbreaks` ("
 					+ "`UID` INT NOT NULL AUTO_INCREMENT, "
 					+ "`player` VARCHAR(45) NOT NULL, "
+                    + "`world` VARCHAR(45) NOT NULL, "
 					+ "`x` VARCHAR(45) NOT NULL, "
 					+ "`y` VARCHAR(45) NOT NULL, "
 					+ "`z` VARCHAR(45) NOT NULL, "
@@ -94,8 +98,8 @@ public class BlockTrackerSQL {
 					+ "PRIMARY KEY (`UID`));";
 			statement.execute(createTable);
 		} catch (SQLException e) {
-			BlockTracker.logger.warn("Disabled!");
-			BlockTracker.logger.warn("mySQL table related error", e);
+			MyPlugin.logger.warning("Disabled!");
+			MyPlugin.logger.warning("mySQL table related error" + e.getMessage());
 			closeConnection(connection);
 			closeStatement(statement);
 			return false;
@@ -103,33 +107,33 @@ public class BlockTrackerSQL {
 		// Table exists
 		closeConnection(connection);
 		closeStatement(statement);
-		BlockTracker.logger.info("Tables OK");
+		MyPlugin.logger.info("Tables OK");
 		return true;
 	}
 
-	public static boolean insertBlockBreak(String player, int x, int y,
-			int z, String time, String block) {
+	public static boolean insertBlockEvent(String player, int world, int x, int y, int z, String time, String block, String event) {
 		Connection connection = null;
 		Statement statement = null;
-		String event = "BlockBreak";
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
-			String SelectDB = "USE " + BlockTracker.database + ";";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
+			String SelectDB = "USE " + MyPlugin.database + ";";
+			String Insert = "INSERT INTO `blockbreaks` (`player`, `world`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
 					+ player
 					+ "', '"
+                    + world
+                    + "', '"
 					+ x
 					+ "', '"
 					+ y
 					+ "', '"
 					+ z
 					+ "', '"
-					+ time + "', '" + block + "', '" + event + "'" + ")" + ";";
+					+ time + "', '" + block + "', '" + event + "');";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			BlockTracker.logger.warn("BlockTracker Disabled!", sqlException);
+			MyPlugin.logger.warning("BlockTracker Disabled!" + sqlException.getMessage());
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -138,67 +142,43 @@ public class BlockTrackerSQL {
 		closeConnection(connection);
 		return true;
 	}
-	
-	public static boolean insertBlockPlace(String player, int x, int y, int z,
-			String time, String block) {
-		Connection connection = null;
-		Statement statement = null;
-		String event = "BlockPlace";
-		try {
-			connection = getConnection();
-			statement = connection.createStatement();
-			String SelectDB = "USE " + BlockTracker.database + ";";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
-					+ player
-					+ "', '"
-					+ x
-					+ "', '"
-					+ y
-					+ "', '"
-					+ z
-					+ "', '"
-					+ time + "', '" + block + "', '" + event + "'" + ")" + ";";
-			statement.execute(SelectDB);
-			statement.execute(Insert);
-		} catch (SQLException sqlException) {
-			BlockTracker.logger.warn("BlockTracker Disabled!", sqlException);
-			closeStatement(statement);
-			closeConnection(connection);
-			return false;
-		}
-		closeStatement(statement);
-		closeConnection(connection);
-		return true;
-	}
-	
-	public static List<String> getBlockRecord(int X, int Y, int Z, String event) {
+
+	public static List<String> getBlockRecord(MC_Player plr, int World, int X, int Y, int Z) {
 		
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs;
+        int start = 0;//page * 10;
+        int end = start + 10;
+        List<String> results = new ArrayList<String>();
 		
 		 try{
 			 connection = getConnection();
 				statement = connection.createStatement();
-				String SelectDB = "USE " + BlockTracker.database + ";";
-				String Fetch = "SELECT * FROM `blockbreaks` WHERE `x`='" + X + "' AND `y`='" + Y + "' AND `z`='" + Z + "';";
+				String SelectDB = "USE " + MyPlugin.database + ";";
+				String Fetch = "SELECT * FROM `blockbreaks`" +
+                        "WHERE `world`='" + World + "'" +
+                        "AND `x`='" + X + "'" +
+                        "AND `y`='" + Y + "'" +
+                        "AND `z`='" + Z + "'" +
+                        "ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
 				statement.execute(SelectDB);
 				rs = statement.executeQuery(Fetch); 
 
-		        ArrayList<String> list= new ArrayList<String>();
 		        while (rs.next()) {
-		            list.add(rs.getString("player"));
+                    results.add(ChatColor.GREEN + rs.getString("time") + " " +
+                            ChatColor.AQUA + rs.getString("player") + " " +
+                            ChatColor.RED + rs.getString("event") + " " +
+                            ChatColor.GOLD + rs.getString("block"));
+		        }
+             plr.sendMessage(ChatColor.DARK_PURPLE + "Block changes at " + X + ", " + Y + ", " + Z);
+             Collections.sort(results);
+             for(int i =0; i<results.size(); i++){
+                 plr.sendMessage(results.get(i));
+             }
 
-		            String[] result = new String[list.size()];
-		            result = list.toArray(result);
-
-		            for(int i =0; i<result.length; i++){
-		            	BlockTracker.logger.info(result[i]);
-		            }   
-		        }   
-
-		    }catch(SQLException ex){
-		    	BlockTracker.logger.warn(ex);
+         }catch(SQLException ex){
+		    	plr.sendMessage("Error: " + ex.getMessage());
 		    }
 		
 		 closeConnection(connection);
@@ -211,8 +191,7 @@ public class BlockTrackerSQL {
 		try {
 			connection.close();
 		} catch (SQLException e) {
-			BlockTracker.logger.warn("mySQL error: Could not close connection",
-					e);
+			MyPlugin.logger.warning("mySQL error: Could not close connection" + e.getMessage());
 		}
 	}
 
@@ -220,8 +199,7 @@ public class BlockTrackerSQL {
 		try {
 			statement.close();
 		} catch (SQLException e) {
-			BlockTracker.logger.warn("mySQL error: Could not close statement",
-					e);
+			MyPlugin.logger.warning("mySQL error: Could not close statement" + e.getMessage());
 		}
 	}
 

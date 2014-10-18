@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mcau</groupId>
 	<artifactId>blocktracker</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>BlockTracker</name>
-	<description>MCAU Block Logging project</description>
+	<version>1.0</version>
+	<name>RainbowBlockTracker</name>
+	<description>MCAU Block Logging project. Ported to Rainbow API.</description>
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
 		<plugins>
@@ -28,9 +28,6 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<artifactSet>
-								<excludes></excludes>
-							</artifactSet>
 						</configuration>
 					</execution>
 				</executions>
@@ -40,9 +37,6 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<manifest>
-							<mainClass>net.minecraft.server.MinecraftServer</mainClass>
-						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
@@ -61,27 +55,19 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.32</version>
 		</dependency>
-		<dependency>
-			<groupId>net.minecraft</groupId>
-			<artifactId>minecraft_server</artifactId>
-			<version>1.8</version>
-			<scope>compile</scope>
-			<!-- <systemPath>${project.basedir}/src/main/resources/minecraft_server.1.8.jar</systemPath> -->
-		</dependency>
+        <dependency>
+            <groupId>org.rbow</groupId>
+            <artifactId>PluginReference</artifactId>
+            <version>42</version>
+            <type>jar</type>
+        </dependency>
 	</dependencies>
-	<repositories>
-		<repository>
-	    <id>mc-server-repo</id>
-	    <releases>
-	        <enabled>true</enabled>
-	        <checksumPolicy>ignore</checksumPolicy>
-	    </releases>
-	    <snapshots>
-	        <enabled>false</enabled>
-	    </snapshots>
-	    <url>file://${project.basedir}/mc-server-repo</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>libraries</id>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
+    </repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

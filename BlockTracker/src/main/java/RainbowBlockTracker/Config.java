@@ -1,16 +1,13 @@
+package RainbowBlockTracker;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Properties;
 
-public class BlockTrackerConfig {
+public class Config {
 
     static Properties prop = new Properties();
     static OutputStream output = null;
+    static File config = new File("plugins_mod/RainbowBlockTracker/config.txt");
 
     public static boolean readConfig() {
 
@@ -20,7 +17,7 @@ public class BlockTrackerConfig {
         try {
 
             try {
-                input = new FileInputStream("BlockTrackerDB.config");
+                input = new FileInputStream(config);
             } catch (FileNotFoundException e) {
                 createConfig();
                 return false;
@@ -28,32 +25,33 @@ public class BlockTrackerConfig {
 
             prop.load(input);
 
-            BlockTracker.host = prop.getProperty("host");
-            BlockTracker.database = prop.getProperty("database");
-            BlockTracker.dbuser = prop.getProperty("dbuser");
-            BlockTracker.dbpass = prop.getProperty("dbpass");
+            MyPlugin.host = prop.getProperty("host");
+            MyPlugin.database = prop.getProperty("database");
+            MyPlugin.dbuser = prop.getProperty("dbuser");
+            MyPlugin.dbpass = prop.getProperty("dbpass");
         } catch (IOException ex) {
-            BlockTracker.logger.warn("Disabled! Configuration error.", ex);
+            MyPlugin.logger.warning("Disabled! Configuration error." + ex.getMessage());
         }
         try {
             input.close();
         } catch (IOException e) {
-            BlockTracker.logger.warn("Disabled! Configuration error.", e);
+            MyPlugin.logger.warning("Disabled! Configuration error." + e.getMessage());
             return false;
         }
-        BlockTracker.logger.info("Config: OK");
+        MyPlugin.logger.info("Config: OK");
         return true;
     }
 
     public static void createConfig() {
         try {
+            config.getParentFile().mkdirs();
 
-            output = new FileOutputStream("BlockTrackerDB.config");
+            output = new FileOutputStream(config);
 
             prop.setProperty("host", "localhost");
             prop.setProperty("database", "blocktracker");
             prop.setProperty("dbuser", "username");
-            prop.setProperty("dbpass", "pasword");
+            prop.setProperty("dbpass", "password");
 
             prop.store(output, null);
 
@@ -63,8 +61,7 @@ public class BlockTrackerConfig {
             if (output != null) {
                 try {
                     output.close();
-                    BlockTracker.logger
-                            .warn("Configuration file created. Please edit and restart server");
+                    MyPlugin.logger.warning("Configuration file created. Please edit and restart server");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
