@@ -41,8 +41,6 @@ public class Command implements MC_Command {
             } else {
                 Tool.TooledPlayers.add(Player);
                 plr.sendMessage(ChatColor.GREEN + "[BlockTracker] Tool Enabled.");
-                plr.setItemInHand(Tool.wooden_pickaxe);
-                plr.sendMessage(ChatColor.GREEN + "You receive BlockTracker Tool (Wooden Pickaxe).");
             }
         }
     }

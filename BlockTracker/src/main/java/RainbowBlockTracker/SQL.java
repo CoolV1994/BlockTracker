@@ -2,9 +2,7 @@ package RainbowBlockTracker;
 
 import PluginReference.ChatColor;
 import PluginReference.MC_Player;
-import PluginReference.MC_World;
 
-import java.io.OutputStream;
 import java.util.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,16 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-//TODO
-//Need to resdesign table to allow for different events
-//BlockBreak
-//BlockPlace
 public class SQL {
-
-	Properties prop = new Properties();
-	OutputStream output = null;
-
 	public synchronized static Connection getConnection() throws SQLException {
 		Connection conn = null;
 		try {
@@ -31,9 +20,8 @@ public class SQL {
 			MyPlugin.logger.warning("mySQL dependencies error" + e.getMessage());
 		}
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://"
-					+ MyPlugin.host, MyPlugin.dbuser,
-					MyPlugin.dbpass);
+			conn = DriverManager.getConnection("jdbc:mysql://" + MyPlugin.host,
+                    MyPlugin.dbuser, MyPlugin.dbpass);
 		} catch (SQLException err) {
 			MyPlugin.logger.warning("Disabled");
 			MyPlugin.logger.warning("mySQL connection error" + err.getMessage());
@@ -50,7 +38,7 @@ public class SQL {
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
-			String sql = "CREATE DATABASE " + MyPlugin.database + ";";
+			String sql = "CREATE DATABASE `" + MyPlugin.database + "`;";
 			statement.executeUpdate(sql);
 		} catch (SQLException sqlException) {
 			if (sqlException.getErrorCode() == 1007) {
@@ -60,8 +48,7 @@ public class SQL {
 				MyPlugin.logger.info("Database: OK");
 				return true;
 			} else {
-				MyPlugin.logger
-						.warning("BlockTracker Disabled!" + sqlException.getMessage());
+				MyPlugin.logger.warning("BlockTracker Disabled!" + sqlException.getMessage());
 				closeStatement(statement);
 				closeConnection(connection);
 				return false;
@@ -82,7 +69,7 @@ public class SQL {
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
-			String sql = "USE " + MyPlugin.database + ";";
+			String sql = "USE `" + MyPlugin.database + "`;";
 			statement.execute(sql);
 			// Create Table
 			String createTable = "CREATE TABLE IF NOT EXISTS `" + MyPlugin.database + "`.`blockbreaks` ("
@@ -117,7 +104,7 @@ public class SQL {
 		try {
 			connection = getConnection();
 			statement = connection.createStatement();
-			String SelectDB = "USE " + MyPlugin.database + ";";
+			String SelectDB = "USE `" + MyPlugin.database + "`;";
 			String Insert = "INSERT INTO `blockbreaks` (`player`, `world`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
 					+ player
 					+ "', '"
@@ -155,7 +142,7 @@ public class SQL {
 		 try{
 			 connection = getConnection();
 				statement = connection.createStatement();
-				String SelectDB = "USE " + MyPlugin.database + ";";
+				String SelectDB = "USE `" + MyPlugin.database + "`;";
 				String Fetch = "SELECT * FROM `blockbreaks`" +
                         "WHERE `world`='" + World + "'" +
                         "AND `x`='" + X + "'" +
@@ -173,18 +160,17 @@ public class SQL {
 		        }
              plr.sendMessage(ChatColor.DARK_PURPLE + "Block changes at " + X + ", " + Y + ", " + Z);
              Collections.sort(results);
-             for(int i =0; i<results.size(); i++){
+             for(int i = 0; i < results.size(); i++){
                  plr.sendMessage(results.get(i));
              }
 
-         }catch(SQLException ex){
-		    	plr.sendMessage("Error: " + ex.getMessage());
-		    }
+        } catch(SQLException ex){
+            plr.sendMessage("Error: " + ex.getMessage());
+        }
 		
-		 closeConnection(connection);
-		 closeStatement(statement);
+		closeConnection(connection);
+		closeStatement(statement);
 		return null;
-		
 	}
 
 	public static void closeConnection(Connection connection) {
