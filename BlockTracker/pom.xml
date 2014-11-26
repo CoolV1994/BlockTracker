@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mcau</groupId>
-	<artifactId>blocktracker</artifactId>
-	<version>1.1</version>
+	<artifactId>RainbowBlockTracker</artifactId>
+	<version>1.2</version>
 	<name>RainbowBlockTracker</name>
 	<description>MCAU Block Logging project. Ported to Rainbow API.</description>
 	<build>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.rbow</groupId>
             <artifactId>PluginReference</artifactId>
-            <version>42</version>
+            <version>47</version>
             <type>jar</type>
         </dependency>
 	</dependencies>

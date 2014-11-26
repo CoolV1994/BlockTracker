@@ -5,7 +5,7 @@ import PluginReference.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class Command implements MC_Command {
+public class BTCommand implements MC_Command {
     @Override
     public String getCommandName() {
         return "bt";
@@ -22,26 +22,36 @@ public class Command implements MC_Command {
     }
 
     @Override
-    public void handleCommand(MC_Player plr, String[] strings) {
+    public void handleCommand(MC_Player plr, String[] args) {
         String Player = plr.getName();
 
-        if (strings.length == 1) {
-            if (strings[0].equals("pick")) {
-                plr.setItemInHand(Tool.wooden_pickaxe);
-                plr.sendMessage(ChatColor.GREEN + "You receive BlockTracker Tool (Wooden Pickaxe).");
-            }
-            if (strings[0].equals("block")) {
-                plr.setItemInHand(Tool.bedrock);
-                plr.sendMessage(ChatColor.GREEN + "You receive BlockTracker Tool (Bedrock).");
-            }
-        } else {
+        if (args.length == 0) {
             if (Tool.isPlayerTooled(Player)) {
                 Tool.TooledPlayers.remove(Player);
                 plr.sendMessage(ChatColor.RED + "[BlockTracker] Tool Disabled.");
+                return;
             } else {
                 Tool.TooledPlayers.add(Player);
                 plr.sendMessage(ChatColor.GREEN + "[BlockTracker] Tool Enabled.");
+                return;
             }
+        }
+        if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("pick")) {
+                String oldItem = plr.getItemInHand().getFriendlyName();
+                plr.setItemInHand(Tool.wooden_pickaxe);
+                plr.sendMessage(ChatColor.GREEN + "Replaced " + oldItem + " with the BlockTracker Tool (Wooden Pickaxe).");
+                return;
+            }
+            if (args[0].equalsIgnoreCase("block")) {
+                String oldItem = plr.getItemInHand().getFriendlyName();
+                plr.setItemInHand(Tool.bedrock);
+                plr.sendMessage(ChatColor.GREEN + "Replaced " + oldItem + " with the BlockTracker Tool (Bedrock).");
+                return;
+            }
+        }
+        if (args.length > 0) {
+            getHelpLine(plr);
         }
     }
 

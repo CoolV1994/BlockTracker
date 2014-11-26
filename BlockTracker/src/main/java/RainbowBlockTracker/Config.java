@@ -29,6 +29,9 @@ public class Config {
             MyPlugin.database = prop.getProperty("database");
             MyPlugin.dbuser = prop.getProperty("dbuser");
             MyPlugin.dbpass = prop.getProperty("dbpass");
+            MyPlugin.dbtable = prop.getProperty("dbtable", "blockbreaks");
+            MyPlugin.queueThreads = Integer.parseInt(prop.getProperty("queueThreads", "2"));
+            MyPlugin.queueShutdownTimeout = Long.parseLong(prop.getProperty("queueShutdownTimeout", "60"));
         } catch (IOException ex) {
             MyPlugin.logger.warning("Disabled! Configuration error." + ex.getMessage());
         }
@@ -52,6 +55,9 @@ public class Config {
             prop.setProperty("database", "blocktracker");
             prop.setProperty("dbuser", "username");
             prop.setProperty("dbpass", "password");
+            prop.setProperty("dbtable", "blockbreaks");
+            prop.setProperty("queueThreads", "2");
+            prop.setProperty("queueShutdownTimeout", "60");
 
             prop.store(output, null);
 

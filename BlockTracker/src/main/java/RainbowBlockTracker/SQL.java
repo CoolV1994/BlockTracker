@@ -1,7 +1,9 @@
 package RainbowBlockTracker;
 
 import PluginReference.ChatColor;
+import PluginReference.MC_DimensionType;
 import PluginReference.MC_Player;
+import PluginReference.MC_World;
 
 import java.util.*;
 import java.sql.Connection;
@@ -72,7 +74,7 @@ public class SQL {
 			String sql = "USE `" + MyPlugin.database + "`;";
 			statement.execute(sql);
 			// Create Table
-			String createTable = "CREATE TABLE IF NOT EXISTS `" + MyPlugin.database + "`.`blockbreaks` ("
+			String createTable = "CREATE TABLE IF NOT EXISTS `" + MyPlugin.database + "`.`" + MyPlugin.dbtable + "` ("
 					+ "`UID` INT NOT NULL AUTO_INCREMENT, "
 					+ "`player` VARCHAR(45) NOT NULL, "
                     + "`world` VARCHAR(45) NOT NULL, "
@@ -105,7 +107,7 @@ public class SQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE `" + MyPlugin.database + "`;";
-			String Insert = "INSERT INTO `blockbreaks` (`player`, `world`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
+			String Insert = "INSERT INTO `" + MyPlugin.dbtable + "` (`player`, `world`, `x`, `y`, `z`, `time`, `block`, `event`) VALUES ('"
 					+ player
 					+ "', '"
                     + world
@@ -116,11 +118,16 @@ public class SQL {
 					+ "', '"
 					+ z
 					+ "', '"
-					+ time + "', '" + block + "', '" + event + "');";
+					+ time
+					+ "', \""
+					+ block
+					+ "\", '"
+					+ event
+					+ "');";
 			statement.execute(SelectDB);
 			statement.execute(Insert);
 		} catch (SQLException sqlException) {
-			MyPlugin.logger.warning("BlockTracker Disabled!" + sqlException.getMessage());
+			MyPlugin.logger.warning("BlockTracker Error!" + sqlException.getMessage());
 			closeStatement(statement);
 			closeConnection(connection);
 			return false;
@@ -130,8 +137,7 @@ public class SQL {
 		return true;
 	}
 
-	public static List<String> getBlockRecord(MC_Player plr, int World, int X, int Y, int Z) {
-		
+	public static void getBlockRecord(MC_Player plr, int World, int X, int Y, int Z) {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs;
@@ -143,7 +149,7 @@ public class SQL {
 			 connection = getConnection();
 				statement = connection.createStatement();
 				String SelectDB = "USE `" + MyPlugin.database + "`;";
-				String Fetch = "SELECT * FROM `blockbreaks`" +
+				String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
                         "WHERE `world`='" + World + "'" +
                         "AND `x`='" + X + "'" +
                         "AND `y`='" + Y + "'" +
@@ -170,7 +176,127 @@ public class SQL {
 		
 		closeConnection(connection);
 		closeStatement(statement);
-		return null;
+	}
+
+	public static void lookupPlayer(MC_Player player, String targetPlayer, int page) {
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs;
+		int start = page * 10;
+		int end = start + 10;
+		List<String> results = new ArrayList<String>();
+
+		try{
+			connection = getConnection();
+			statement = connection.createStatement();
+			String SelectDB = "USE `" + MyPlugin.database + "`;";
+			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
+					"WHERE `player` LIKE '%" + targetPlayer + "%'" +
+					"ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
+			statement.execute(SelectDB);
+			rs = statement.executeQuery(Fetch);
+
+			while (rs.next()) {
+				results.add(ChatColor.GREEN + rs.getString("time") + " " +
+						ChatColor.AQUA + rs.getString("world") + " (" +
+						rs.getString("x") + ", " + rs.getString("y") + ", " + rs.getString("z") + ") " +
+						ChatColor.RED + rs.getString("event") + " " +
+						ChatColor.GOLD + rs.getString("block"));
+			}
+			player.sendMessage(ChatColor.DARK_PURPLE + "Block changes by player " + targetPlayer);
+			Collections.sort(results);
+			for(int i = 0; i < results.size(); i++){
+				player.sendMessage(results.get(i));
+			}
+
+		} catch(SQLException ex){
+			player.sendMessage("Error: " + ex.getMessage());
+		}
+
+		closeConnection(connection);
+		closeStatement(statement);
+	}
+
+	public static void lookupCoord(MC_Player plr, int World, int X, int Y, int Z, int Radius, int page) {
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs;
+		int start = page * 10;
+		int end = start + 10;
+		List<String> results = new ArrayList<String>();
+
+		try{
+			connection = getConnection();
+			statement = connection.createStatement();
+			String SelectDB = "USE `" + MyPlugin.database + "`;";
+			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
+					"WHERE `world`='" + World + "'" +
+					"AND `x` (BETWEEN '" + (X - Radius) + "' AND '" + (X + Radius) + "')" +
+					"AND `y` (BETWEEN '" + (Y - Radius) + "' AND '" + (Y + Radius) + "')" +
+					"AND `z` (BETWEEN '" + (Z - Radius) + "' AND '" + (Z + Radius) + "')" +
+					"ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
+			statement.execute(SelectDB);
+			rs = statement.executeQuery(Fetch);
+
+			while (rs.next()) {
+				results.add(ChatColor.GREEN + rs.getString("time") + " " +
+						ChatColor.AQUA + rs.getString("player") + " " +
+						ChatColor.RED + rs.getString("event") + " " +
+						ChatColor.GOLD + rs.getString("block"));
+			}
+			plr.sendMessage(ChatColor.DARK_PURPLE + "Block changes within " + Radius + " blocks of " + World + " (" + X + ", " + Y + ", " + Z + ")");
+			Collections.sort(results);
+			for(int i = 0; i < results.size(); i++){
+				plr.sendMessage(results.get(i));
+			}
+
+		} catch(SQLException ex){
+			plr.sendMessage("Error: " + ex.getMessage());
+		}
+
+		closeConnection(connection);
+		closeStatement(statement);
+	}
+
+	public static void lookupRecent(MC_Player player, int page) {
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs;
+		int start = page * 10;
+		int end = start + 10;
+		List<String> results = new ArrayList<String>();
+
+		try{
+			connection = getConnection();
+			statement = connection.createStatement();
+			String SelectDB = "USE `" + MyPlugin.database + "`;";
+			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
+					"ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
+			statement.execute(SelectDB);
+			rs = statement.executeQuery(Fetch);
+
+			while (rs.next()) {
+				results.add(ChatColor.GREEN + rs.getString("time") + " " +
+						ChatColor.AQUA + rs.getString("world") + " (" +
+						rs.getString("x") + ", " + rs.getString("y") + ", " + rs.getString("z") + ") " +
+						ChatColor.GRAY + rs.getString("player") + " " +
+						ChatColor.RED + rs.getString("event") + " " +
+						ChatColor.GOLD + rs.getString("block"));
+			}
+			player.sendMessage(ChatColor.DARK_PURPLE + "Recent block changes");
+			Collections.sort(results);
+			for(int i = 0; i < results.size(); i++){
+				player.sendMessage(results.get(i));
+			}
+
+		} catch(SQLException ex){
+			player.sendMessage("Error: " + ex.getMessage());
+		}
+
+		closeConnection(connection);
+		closeStatement(statement);
 	}
 
 	public static void closeConnection(Connection connection) {
