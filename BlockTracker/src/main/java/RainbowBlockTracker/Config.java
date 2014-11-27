@@ -59,7 +59,7 @@ public class Config {
             prop.setProperty("queueThreads", "2");
             prop.setProperty("queueShutdownTimeout", "60");
 
-            prop.store(output, null);
+            prop.store(output, "RainbowBlockTracker Configuration");
 
         } catch (IOException io) {
             io.printStackTrace();

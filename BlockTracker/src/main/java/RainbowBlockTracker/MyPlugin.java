@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import PluginReference.*;
 
 public class MyPlugin extends PluginBase {
-    public static String version = "1.2";
+    public static String version = "1.3";
     public static MC_Server server = null;
 	public static final Logger logger = Logger.getLogger("BlockTracker");
     public static ExecutorService queue;

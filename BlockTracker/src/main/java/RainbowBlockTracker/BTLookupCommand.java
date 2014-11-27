@@ -28,6 +28,11 @@ public class BTLookupCommand implements MC_Command {
 
     @Override
     public void handleCommand(MC_Player plr, String[] args) {
+        if (args.length == 0) {
+            // Help
+            plr.sendMessage(ChatColor.RED + "Use /btlookup [ player | coord | recent ]");
+            return;
+        }
         if (args[0].equalsIgnoreCase("player")) {
             if (args.length == 2) {
                 SQL.lookupPlayer(plr, args[1], 0);
@@ -80,8 +85,7 @@ public class BTLookupCommand implements MC_Command {
             return;
         }
         // Help
-        plr.sendMessage(ChatColor.RED + "/btlookup [ player | coord | recent ]");
-        return;
+        plr.sendMessage(ChatColor.RED + "Use /btlookup [ player | coord | recent ]");
     }
 
     @Override
