@@ -191,8 +191,8 @@ public class SQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE `" + MyPlugin.database + "`;";
-			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
-					"WHERE `player` LIKE '%" + targetPlayer + "%'" +
+			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "` " +
+					"WHERE `player` LIKE '%" + targetPlayer + "%' " +
 					"ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
 			statement.execute(SelectDB);
 			rs = statement.executeQuery(Fetch);
@@ -230,11 +230,11 @@ public class SQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE `" + MyPlugin.database + "`;";
-			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
-					"WHERE `world`='" + World + "'" +
-					"AND `x` (BETWEEN '" + (X - Radius) + "' AND '" + (X + Radius) + "')" +
-					"AND `y` (BETWEEN '" + (Y - Radius) + "' AND '" + (Y + Radius) + "')" +
-					"AND `z` (BETWEEN '" + (Z - Radius) + "' AND '" + (Z + Radius) + "')" +
+			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "` " +
+					"WHERE (`world`='" + World + "' " +
+					"AND (`x` BETWEEN '" + (X - Radius) + "' AND '" + (X + Radius) + "') " +
+					"AND (`y` BETWEEN '" + (Y - Radius) + "' AND '" + (Y + Radius) + "') " +
+					"AND (`z` BETWEEN '" + (Z - Radius) + "' AND '" + (Z + Radius) + "')) " +
 					"ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
 			statement.execute(SelectDB);
 			rs = statement.executeQuery(Fetch);
@@ -272,7 +272,7 @@ public class SQL {
 			connection = getConnection();
 			statement = connection.createStatement();
 			String SelectDB = "USE `" + MyPlugin.database + "`;";
-			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "`" +
+			String Fetch = "SELECT * FROM `" + MyPlugin.dbtable + "` " +
 					"ORDER BY UID DESC LIMIT " + start + ", " + end + ";";
 			statement.execute(SelectDB);
 			rs = statement.executeQuery(Fetch);
